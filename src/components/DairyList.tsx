@@ -1,9 +1,9 @@
 
 import { useEffect,  useState } from "react"
-import axios from "axios";
+//import axios from "axios";
 import { SearchDairy } from "./SearchDiary";
 import { DairyCard } from "./DairyCard";
-import { ErrorMessage } from "./ErrorMessage";
+//import { ErrorMessage } from "./ErrorMessage";
 import type { Dairy } from "../types/Dairy";
 import {
   Box,
@@ -23,30 +23,36 @@ export function DairyList({ dairys,onEditDairy, onDeleteDairy }: Props) {
     const[sortby, setsortby]=useState("")
     const[searchText, setsearchText]=useState("")
     const [type, setType] = useState("all");
-    const[Dairys,setDairys]=useState<Dairy[]>([]);
+    //const[Dairys,setDairys]=useState<Dairy[]>([]);
     const [loadingMessage,setloadingMessage]=useState(true)
-    const[errMessage, seterrMessage]=useState("")
+    //const[errMessage, seterrMessage]=useState("")
    
 
-    useEffect(()=>
-    {
-        async function getData()
-        {
-            try{
-                const res=await axios.get("http://localhost:3000/dairy")
-                console.log(res.data)
-                setDairys(res.data)
-            }
-            catch(err)
-            {
-                seterrMessage("Error has occured")
-            }
-            finally{setloadingMessage(false)}
-        }
-        getData();
-    },[])
+    // useEffect(()=>
+    // {
+    //     async function getData()
+    //     {
+    //         try{
+    //             // const res=await axios.get("http://localhost:3000/dairy")
+    //             // console.log(res.data)
+    //             // setDairys(res.data)
+    //              const res = await fetch(`${import.meta.env.BASE_URL}dairy.json`);
+    //             const data = await res.json();
+    //             console.log(data);
+    //             setDairys(Array.isArray(data) ? data : data.dairy);
+    //         }
+    //         catch(err)
+    //         {
+    //             seterrMessage("Error has occured")
+    //         }
+    //         finally{setloadingMessage(false)}
+    //     }
+    //     getData();
+    // },[])
     
-    
+    useEffect(() => {
+      setloadingMessage(false);
+    }, []);
     const filteredArray = dairys.filter((dairy: Dairy) => {
     const matchesSearch =
       dairy.name.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -103,7 +109,7 @@ export function DairyList({ dairys,onEditDairy, onDeleteDairy }: Props) {
         <Typography>Loading...</Typography>
       </Box>
     )}
-    {errMessage && <ErrorMessage msg={errMessage} />}
+    {/* {errMessage && <ErrorMessage msg={errMessage} />} */}
 
     
     {!loadingMessage && dairys.length === 0 && (

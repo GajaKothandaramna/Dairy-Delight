@@ -20,7 +20,7 @@ vi.mock("./BasketContext", () => ({
 }));
 
 const milk: Dairy = {
-    id: 1,
+    id: "1",
     name: "Organic Milk",
     price: 50,
     type: "Milk",
@@ -30,7 +30,7 @@ const milk: Dairy = {
 };
 
 const cheese: Dairy = {
-    id: 2,
+    id: "2",
     name: "Cheese",
     price: 100,
     type: "Cheese",

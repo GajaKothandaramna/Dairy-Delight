@@ -1,20 +1,21 @@
 
-import { BrowserRouter, Routes, Route, data, resolvePath } from "react-router-dom";
+import {  Routes, Route } from "react-router-dom";
 import './App.css'
 import DairyManager from './components/DairyManager';
 import { Header } from "./components/header";
 import { Footer } from "./components/footer";
 import { BasketProvider } from "./components/BasketContext";
 import { BasketPage } from "./components/BasketPage";
-import { useContext, useEffect, useRef, useState, type ChangeEvent } from "react";
+import {  useEffect, useRef, useState} from "react";
 import type { Dairy } from "./types/Dairy";
-import AuthContext from "./components/AuthContext";
+//import AuthContext from "./components/AuthContext";
 import axios from "axios";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import AdminDashboard from "./components/AdminDashboard";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Snackbar, Alert } from "@mui/material";
 
 
 
@@ -23,10 +24,10 @@ function App() {
   renderCount.current++;
   const [editingDairy, setEditingDairy] = useState<Dairy | null>(null);
   const [openEdit, setOpenEdit] = useState(false);
-  const { role} = useContext(AuthContext)!;
+  //const { role} = useContext(AuthContext)!;
   //const { data: dairys = [] } =  useFetch<Dairy[]>("http://localhost:3000/dairy");
   const [dairys, setDairys] = useState<Dairy[]>([]);
-  useEffect(() => {  fetchDairys();}, []);
+ // useEffect(() => {  fetchDairys();}, []);
 
   const fetchDairys = async () => {
   // const res = await axios.get<Dairy[]>("http://localhost:3000/dairy");
@@ -188,6 +189,18 @@ const handleEditDairy = (dairy: Dairy) => {
               </Button>
       </DialogActions>
     </Dialog>
+    <Snackbar
+  open={snackbar.open}
+  autoHideDuration={3000}
+  onClose={() => setSnackbar({ ...snackbar, open: false })}
+>
+  <Alert
+    severity={snackbar.type}
+    onClose={() => setSnackbar({ ...snackbar, open: false })}
+  >
+    {snackbar.msg}
+  </Alert>
+</Snackbar>
       <Footer/>
     
     </BasketProvider>

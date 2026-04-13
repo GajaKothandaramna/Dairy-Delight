@@ -43,7 +43,7 @@ return (
       p: 1,  backgroundColor: "#fff",
     }}>
 
-    <CardMedia   component="img"
+    {/* <CardMedia   component="img"
       image={dairy1.image}
       alt={dairy1.name}
       sx={{
@@ -51,8 +51,19 @@ return (
         width: "100%",
         objectFit: "cover",
         borderRadius: 1,
-      }}/>
+      }}/> */}
 
+    <CardMedia
+      component="img"
+      image={`${import.meta.env.BASE_URL}${dairy1.image}`}
+      alt={dairy1.name}
+      sx={{
+        height: 150,
+        width: "100%",
+        objectFit: "cover",
+        borderRadius: 1,
+      }}
+    />
     <CardContent sx={{ p: 1 }}>
       <Typography variant="subtitle1" fontWeight="bold">
         {dairy1.name}

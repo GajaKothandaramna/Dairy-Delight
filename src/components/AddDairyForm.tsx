@@ -12,7 +12,8 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
 import type { JSX } from "react";
-import type { SelectChangeEvent } from "@mui/material";
+import { Snackbar, Alert } from "@mui/material";
+//import type { SelectChangeEvent } from "@mui/material";
 import { PRODUCT_TYPES, type Dairy, type ProductType } from "../types/Dairy";
 
 type AddDairyFormProps = {
@@ -53,17 +54,25 @@ export default function AddDairyForm({ onAddDairy}: AddDairyFormProps): JSX.Elem
         newErrors.price = "Enter a valid positive price.";
       } else delete newErrors.price;
     }
-    
     if (name === "lactoseFree") {
-      if (!value || isNaN(Number(value)) || Number(value) <= 0) {
-        newErrors.lactoseFree = "Enter a valid positive lactoseFree.";
-      } else delete newErrors.lactoseFree;
+      // no validation needed OR simple boolean check
+      delete newErrors.lactoseFree;
     }
-     if (name === "lactoseFree") {
-      if (!value || isNaN(Number(value)) || Number(value) <= 0) {
-        newErrors.lactoseFree = "Enter a valid positive lactoseFree.";
-      } else delete newErrors.lactoseFree;
-    }
+    if (name === "fatPercentage") {
+  if (!value || isNaN(Number(value)) || Number(value) < 0) {
+    newErrors.fatPercentage = "Enter valid fat percentage.";
+  } else delete newErrors.fatPercentage;
+}
+    // if (name === "lactoseFree") {
+    //   if (!value || isNaN(Number(value)) || Number(value) <= 0) {
+    //     newErrors.lactoseFree = "Enter a valid positive lactoseFree.";
+    //   } else delete newErrors.lactoseFree;
+    // }
+    //  if (name === "lactoseFree") {
+    //   if (!value || isNaN(Number(value)) || Number(value) <= 0) {
+    //     newErrors.lactoseFree = "Enter a valid positive lactoseFree.";
+    //   } else delete newErrors.lactoseFree;
+    // }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -122,7 +131,7 @@ export default function AddDairyForm({ onAddDairy}: AddDairyFormProps): JSX.Elem
          setShowAlert(true);
          clearFormData();
          setExpanded(false);
-        setTimeout(() => setShowAlert(false), 3000);           
+        //setTimeout(() => setShowAlert(false), 3000);           
     } catch (error) {
       console.error("Error submitting form:", error);
       clearFormData();
@@ -135,6 +144,11 @@ export default function AddDairyForm({ onAddDairy}: AddDairyFormProps): JSX.Elem
   return (
     <Container maxWidth="sm" sx={{ mt: 2 }}>
       <Card sx={{ bgcolor: "#fafafa", boxShadow: 3 }}>
+        {/* {showAlert && (
+            <Typography sx={{ color: "green", mt: 2 }}>
+              Dairy added successfully!
+            </Typography>
+          )} */}
         <CardContent onClick={handleExpandClick}>
           <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
             Add Dairy Details
@@ -189,17 +203,27 @@ export default function AddDairyForm({ onAddDairy}: AddDairyFormProps): JSX.Elem
                 margin="normal"
               />
 
-               <TextField
+               <TextField 
+               select   
               label="LactoseFree"
               name="lactoseFree"
-              value={formData.lactoseFree}
-              type="number"
-              onChange={handleChange}
+              value={formData.lactoseFree? "yes" : "no"}
+              //type="number"
+             // onChange={handleChange}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  lactoseFree: e.target.value === "yes",
+                })
+              }
               fullWidth
               margin="normal"
-              error={!!errors.lactoseFree}
-              helperText={errors.lactoseFree}
-            />
+              // error={!!errors.lactoseFree}
+              // helperText={errors.lactoseFree}
+            >
+            <MenuItem value="yes">Yes</MenuItem>
+            <MenuItem value="no">No</MenuItem>
+            </TextField>
 
                  <TextField
               label="Fat Percentage"
@@ -234,7 +258,7 @@ export default function AddDairyForm({ onAddDairy}: AddDairyFormProps): JSX.Elem
                 <Button
                   type="submit"
                   variant="contained"
-                  onClick={handleSubmit}
+                  //onClick={handleSubmit}
                   sx={{
                     borderRadius: 2,
                     px: 4,
@@ -249,6 +273,18 @@ export default function AddDairyForm({ onAddDairy}: AddDairyFormProps): JSX.Elem
           </CardContent>
         </Collapse>
       </Card>
+      <Snackbar
+        open={showAlert}
+        autoHideDuration={3000}
+        onClose={() => setShowAlert(false)}
+      >
+        <Alert severity="success" onClose={() => setShowAlert(false)}>
+          Dairy added successfully!
+        </Alert>
+      </Snackbar>
     </Container>
+    
   );
+  
+  
 }

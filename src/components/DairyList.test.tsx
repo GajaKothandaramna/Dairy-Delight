@@ -26,12 +26,12 @@ vi.mock("./ErrorMessage", () => ({
 
 const mockDairyData: Dairy[] = [
   {
-      id: 1, name: "Milk", price: 50, type: "Milk",
+      id: "1", name: "Milk", price: 50, type: "Milk",
       image: "",
       fatPercentage: 0
   },
   {
-      id: 2, name: "Cheese", price: 100, type: "Cheese",
+      id: "2", name: "Cheese", price: 100, type: "Cheese",
       image: "",
       fatPercentage: 0
   },
@@ -49,8 +49,10 @@ describe("DairyList Component", () => {
    it("shows loading message initially", () => {
     mockedAxios.get.mockResolvedValueOnce({ data: [] });
 
-    render(<DairyList 
-            onEditDairy={mockOnEditDairy}
+    // render(<DairyList 
+    //         onEditDairy={mockOnEditDairy}
+    //         onDeleteDairy={mockOnDeleteDairy}/>);
+    render(<DairyList  dairys={[]}  onEditDairy={mockOnEditDairy}
             onDeleteDairy={mockOnDeleteDairy}/>);
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
@@ -59,8 +61,10 @@ describe("DairyList Component", () => {
    it("renders dairy products after successful API call", async () => {
     mockedAxios.get.mockResolvedValueOnce({ data: mockDairyData });
 
-    render(<DairyList onEditDairy={mockOnEditDairy}
-                      onDeleteDairy={mockOnDeleteDairy}/>);
+    // render(<DairyList onEditDairy={mockOnEditDairy}
+    //                   onDeleteDairy={mockOnDeleteDairy}/>);
+    render(<DairyList  dairys={[]}  onEditDairy={mockOnEditDairy}
+            onDeleteDairy={mockOnDeleteDairy}/>);
 
     await waitFor(() => {
       expect(screen.getByText("Milk")).toBeInTheDocument();
@@ -71,8 +75,10 @@ describe("DairyList Component", () => {
   it("shows message when no dairy products are returned", async () => {
     mockedAxios.get.mockResolvedValueOnce({ data: [] });
 
-    render(<DairyList onEditDairy={mockOnEditDairy}
-                      onDeleteDairy={mockOnDeleteDairy}/>);
+    // render(<DairyList onEditDairy={mockOnEditDairy}
+    //                   onDeleteDairy={mockOnDeleteDairy}/>);
+    render(<DairyList  dairys={[]}  onEditDairy={mockOnEditDairy}
+            onDeleteDairy={mockOnDeleteDairy}/>);
 
     await waitFor(() => {
       expect(
@@ -84,8 +90,11 @@ describe("DairyList Component", () => {
   it("shows error message when API fails", async () => {
     mockedAxios.get.mockRejectedValueOnce(new Error("API Error"));
 
-    render(<DairyList onEditDairy={mockOnEditDairy}
-                      onDeleteDairy={mockOnDeleteDairy}/>);
+    // render(<DairyList onEditDairy={mockOnEditDairy}
+    //                   onDeleteDairy={mockOnDeleteDairy}/>);
+
+    render(<DairyList  dairys={[]}  onEditDairy={mockOnEditDairy}
+            onDeleteDairy={mockOnDeleteDairy}/>);
 
     await waitFor(() => {
       expect(
